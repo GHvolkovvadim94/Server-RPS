@@ -19,7 +19,7 @@ namespace server_rps.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateMatch()
+        public async Task<IActionResult> CreateMatch([FromForm] string userId)
         {
             var usersInQueue = await _context.Users.Where(u => u.State == UserState.Queue).Take(2).ToListAsync();
             if (usersInQueue.Count < 2)
@@ -42,9 +42,10 @@ namespace server_rps.Controllers
             _context.Matches.Add(match);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Match created", matchId = match.Id });
-        }
+            var opponentId = player1.Id == userId ? player2.Id : player1.Id;
 
+            return Ok(new { message = "Match created", opponentId = opponentId });
+        }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMatch(string id)
         {

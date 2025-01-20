@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("server-rps")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f342c78794e29ee622c33413d2b666b567abcadb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3476b1912a8109b132f8d97edb3338e5e0fa130e")]
 [assembly: System.Reflection.AssemblyProductAttribute("server-rps")]
 [assembly: System.Reflection.AssemblyTitleAttribute("server-rps")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

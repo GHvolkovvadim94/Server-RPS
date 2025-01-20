@@ -107,6 +107,18 @@ namespace server_rps.Controllers
             return Ok(new { message = "User validated" });
         }
 
+
+        [HttpGet("stats/{id}")]
+        public async Task<IActionResult> GetUserStats(string id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound(new { error = "User not found" });
+            }
+
+            return Ok(new { userId = user.Id, userName = user.Name, matches = user.Matches, wins = user.Wins });
+        }
         private bool IsValidName(string name)
         {
             if (string.IsNullOrEmpty(name) || name.Length > 16)

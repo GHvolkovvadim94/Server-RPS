@@ -1,52 +1,62 @@
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using server_rps.Data;
 using server_rps.Models;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace server_rps.Services
+namespace server_rps.Controllers
 {
-    public class QueueService
+    [ApiController]
+    [Route("[controller]")]
+    public class QueueController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public QueueService(AppDbContext context)
+        public QueueController(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<bool> AddToQueue(string userId)
+        [HttpPost("join")]
+        public async Task<IActionResult> JoinQueue([FromForm] string userId)
         {
             var user = await _context.Users.FindAsync(userId);
-            if (user == null || user.State != UserState.Lobby)
+            if (user == null)
             {
-                return false;
+                return NotFound(new { error = "User not found" });
             }
 
             user.State = UserState.Queue;
             await _context.SaveChangesAsync();
-            return true;
+
+            return Ok(new { message = "User joined queue" });
         }
 
-        public async Task<bool> RemoveFromQueue(string userId)
+        [HttpPost("leave")]
+        public async Task<IActionResult> LeaveQueue([FromForm] string userId)
         {
             var user = await _context.Users.FindAsync(userId);
-            if (user == null || user.State != UserState.Queue)
+            if (user == null)
             {
-                return false;
+                return NotFound(new { error = "User not found" });
             }
 
             user.State = UserState.Lobby;
             await _context.SaveChangesAsync();
-            return true;
+
+            return Ok(new { message = "User left queue" });
         }
 
-        public async Task<List<User>> GetQueue()
+        [HttpGet("all")]
+        public async Task<IActionResult> GetQueue()
         {
-            return await _context.Users
+            var usersInQueue = await _context.Users
                 .Where(u => u.State == UserState.Queue)
+                .OrderBy(u => u.Id) // Добавьте OrderBy
+                .Take(2)
                 .ToListAsync();
+
+            return Ok(usersInQueue);
         }
     }
 }
