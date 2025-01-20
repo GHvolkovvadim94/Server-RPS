@@ -1,16 +1,15 @@
+using NanoidDotNet;
+
 namespace server_rps.Models
 {
-    public enum UserState
-    {
-        Lobby,
-        Queue,
-        InGame
-    }
-
     public class User
     {
-        public string Id { get; set; } = string.Empty;
+        public string Id { get; set; } = Nanoid.Generate();
         public string Name { get; set; } = string.Empty;
         public UserState State { get; set; } = UserState.Lobby;
+        public int PlayedMatches { get; set; } = 0;
+        public int Losses { get; set; } = 0;
+        public int Wins { get; set; } = 0;
+        public int Draws { get; set; } = 0;
     }
 }

@@ -12,7 +12,6 @@ public class Startup
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite("Data Source=users.db"));
         services.AddControllers();
-        services.AddSingleton<MatchQueueService>();
 
         // Добавляем поддержку CORS
         services.AddCors(options =>
@@ -35,7 +34,7 @@ public class Startup
         }
 
         app.UseRouting();
-        app.UseStaticFiles(); // Добавьте это для обслуживания статических файлов
+        app.UseStaticFiles();
 
         // Включаем CORS
         app.UseCors("AllowAllOrigins");
